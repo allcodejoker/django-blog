@@ -6,3 +6,8 @@ from .models import BlogPost, Category
 def homepage(request):
     blog_posts = BlogPost.objects.all()
     return render(request, 'homepage.html', {'blog_posts': blog_posts})
+
+def blog_post_details(request, pk):
+    blog_post = BlogPost.objects.get(id=pk)
+
+    return render(request, 'blog_post_details.html', {'blog_post': blog_post})

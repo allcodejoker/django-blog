@@ -1,0 +1,13 @@
+{% extends 'base.html' %} 
+
+{% block title %} {{ blog_post.title }} {% endblock %} 
+
+{% block body %}
+
+<h2>{{ blog_post.title }}</h2>
+<h5>By: {{ blog_post.user }}, Category: {{ blog_post.category }}, {{ blog_post.date }}</h5>
+<img src="{{ blog_post.blog_image.url }}" style="height:366px;width:550px;" />
+<br /><br />
+<h3>{{ blog_post.description }}</h3>
+
+{% endblock %}
