@@ -1,10 +1,10 @@
 {% extends 'base.html' %} 
 
-{% block title %} Homepage Title {% endblock %} 
+{% block title %} Homepage {% endblock %} 
 
 {% block body %}
 <div class="header">
-  <h2>Blog Name</h2>
+  <h2>All Blog Joker</h2>
 </div>
 
 <div class="row">
@@ -13,10 +13,9 @@
     <div class="card">
       <h2><a href="{% url 'blog_post_details' blog_post.pk %}">{{ blog_post.title }}</a></h2>
       <h5>
-        By: {{ blog_post.user }}, Category: {{ blog_post.category }}, {{
-        blog_post.date }}
+        By: {{ blog_post.user }}, Category: {{ blog_post.category }}, {{ blog_post.date }}
       </h5>
-      <image src="{{ blog_post.blog_image.url }}" style="height: 200px"></image>
+      <image src="{{ blog_post.blog_image.url }}" class="home-image" style="height: 200px"></image>
       <p>{{ blog_post.description }}</p>
     </div>
     {% endfor %}
