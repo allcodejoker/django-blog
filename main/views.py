@@ -60,3 +60,27 @@ def logout_user(request):
     logout(request)
     print("Successfully logged out!!!")
     return redirect('login_user')
+
+def blog_create(request):
+    if request.user.is_authenticated:
+        current_user = request.user
+        if request.method == "POST":
+            title = request.POST["title"]
+            blog_image = request.FILES.get("blog_image")
+            description = request.POST["description"]
+            category = request.POST["category"]
+
+            category_object = Category.objects.get(name=category)
+
+            new_post = BlogPost.objects.create(user=current_user, title=title, blog_image=blog_image, description=description, category=category_object)
+            new_post.save()
+            print("Post Created!!!")
+            return redirect('homepage')
+        
+        else:
+            categories = Category.objects.all()
+            return render(request, 'blog_create.html', {'categories': categories})
+
+    else:
+        print("Not logged in")
+        return redirect('homepage')
