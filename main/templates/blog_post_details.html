@@ -9,5 +9,7 @@
 <img src="{{ blog_post.blog_image.url }}" style="height:366px;width:550px;" />
 <br /><br />
 <h3>{{ blog_post.description }}</h3>
-
+{% if user.id == blog_post.user.id %}
+    <a href="{% url 'blog_update' blog_post.pk %}">Update</a>
+{% endif %}
 {% endblock %}

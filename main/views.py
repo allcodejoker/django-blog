@@ -84,3 +84,32 @@ def blog_create(request):
     else:
         print("Not logged in")
         return redirect('homepage')
+
+def blog_update(request, pk):
+    if request.user.is_authenticated:
+        blog_post = BlogPost.objects.get(id=pk)
+        categories = Category.objects.all()
+        if request.user == blog_post.user:
+            if request.method == "POST":
+                title = request.POST["title"]
+                blog_image = request.FILES.get("blog_image")
+                description = request.POST["description"]
+                category = request.POST["category"]
+
+                blog_post.title = title
+                blog_post.description = description
+                blog_post.blog_image = blog_image
+
+                category_object = Category.objects.get(name=category)
+                blog_post.category = category_object
+
+                blog_post.save()
+                return redirect("blog_post_details", pk=blog_post.pk)
+            else:
+                return render(request, 'blog_update.html', {'categories': categories, "blog_post": blog_post})
+        else:
+            return redirect("blog_post_details", pk=blog_post.pk)
+    else:
+        print("You are not logged in!!!")
+        return redirect("homepage")
+    

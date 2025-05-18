@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    <title>Update Your Blog Post</title>
+{% endblock %}
+
+{% block body %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <select name="category">
+            {% for category in categories %}
+                <option value="{{ category.name }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" value="{{ blog_post.title }}" name="title" placeholder="Title">
+        <input type="file" name="blog_image" placeholder="Blog Image" allow="image/*">\
+        Current Image: <img src="{{ blog_post.blog_image.url }}" width="100px">
+        <textarea type="text" name="description" placeholder="Description">{{ blog_post.description }}</textarea>
+        <button type="submit">Update</button>
+    </form>
+{% endblock %}
