@@ -113,3 +113,18 @@ def blog_update(request, pk):
         print("You are not logged in!!!")
         return redirect("homepage")
     
+def blog_delete(request, pk):
+    if request.user.is_authenticated:
+        blog_post = BlogPost.objects.get(id=pk)
+        if request.user == blog_post.user:
+            if request.method == "POST":
+                blog_post.delete()
+                print("You deleted a blog post!!!")
+                return redirect('homepage')
+            else:
+                print("You need to use a button!!!")
+                return redirect("blog_post_details", pk=blog_post.pk)
+        else:
+            print("You didn't make this post")
+    else:
+        return redirect("homepage")

@@ -10,4 +10,5 @@ urlpatterns = [
     path('logout_user/', views.logout_user, name="logout_user"),
     path('blog_create/', views.blog_create, name="blog_create"),
     path('blog_update/<int:pk>/', views.blog_update, name="blog_update"),
+    path('blog_delete/<int:pk>/', views.blog_delete, name="blog_delete"),
 ]
