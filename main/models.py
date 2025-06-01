@@ -19,3 +19,13 @@ class BlogPost(models.Model):
     
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    blog_post = models.ForeignKey(BlogPost, related_name="comments", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=300)
+    body = models.TextField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.blog_post.title} - {self.title}"
