@@ -20,4 +20,17 @@
     </form>
 {% endif %}
 
+<h2>Comments({% if blog_post.comments.all %} {{ blog_post.comments.all|length }} {% endif %})</h2>
+
+{% if not blog_post.comments.all %}
+<h3>No Comments Yet...</h3>
+<a class="btn btn-info">Add Comment</a>
+{% else %}
+<a class="btn btn-info">Add Comment</a>
+{% for comment in blog_post.comments.all %}
+<h4><strong>{{ comment.title }}</strong> - {{ comment.date }} - By: {{ comment.user }}</h4>
+<p>{{ comment.body }}</p>
+{% endfor %}
+{% endif %}
+
 {% endblock %}
