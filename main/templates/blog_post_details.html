@@ -24,9 +24,9 @@
 
 {% if not blog_post.comments.all %}
 <h3>No Comments Yet...</h3>
-<a class="btn btn-info">Add Comment</a>
+<a class="btn btn-info" href="{% url 'add_comment' blog_post.pk %}">Add Comment</a>
 {% else %}
-<a class="btn btn-info">Add Comment</a>
+<a class="btn btn-info" href="{% url 'add_comment' blog_post.pk %}">Add Comment</a>
 {% for comment in blog_post.comments.all %}
 <h4><strong>{{ comment.title }}</strong> - {{ comment.date }} - By: {{ comment.user }}</h4>
 <p>{{ comment.body }}</p>

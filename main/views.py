@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import BlogPost, Category
+from .models import BlogPost, Category, Comment
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
@@ -128,3 +128,24 @@ def blog_delete(request, pk):
             print("You didn't make this post")
     else:
         return redirect("homepage")
+
+def add_comment(request, pk):
+    if request.user.is_authenticated:
+        current_user = request.user
+        if request.method == "POST":
+            title = request.POST["title"]
+            body = request.POST["body"]
+
+            commented_post = BlogPost.objects.get(id=pk)
+
+            new_comment = Comment.objects.create(user=current_user, title=title, body=body, blog_post=commented_post)
+            new_comment.save()
+            print("Comment Created!!!")
+            return redirect('blog_post_details', pk=commented_post.pk)
+        
+        else:
+            return render(request, 'add_comment.html')
+
+    else:
+        print("Not logged in")
+        return redirect('homepage')
