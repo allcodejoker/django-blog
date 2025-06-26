@@ -149,3 +149,16 @@ def add_comment(request, pk):
     else:
         print("Not logged in")
         return redirect('homepage')
+
+def like_post(request, post_id):
+    if not request.user.is_authenticated:
+        return redirect('login_user')
+
+    blog_post = BlogPost.objects.get(id=post_id)
+
+    if request.user in blog_post.likes.all():
+        blog_post.likes.remove(request.user)
+    else:
+        blog_post.likes.add(request.user)
+
+    return redirect('blog_post_details', pk=blog_post.pk)

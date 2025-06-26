@@ -16,9 +16,13 @@ class BlogPost(models.Model):
     blog_image = models.ImageField(upload_to=('blog_images/'))
     description = models.TextField()
     date = models.DateTimeField(auto_now_add=True)
+    likes = models.ManyToManyField(User, related_name="liked_posts", blank=True)
     
     def __str__(self):
         return self.title
+    
+    def total_likes(self):
+        return self.likes.count()
 
 class Comment(models.Model):
     blog_post = models.ForeignKey(BlogPost, related_name="comments", on_delete=models.CASCADE)

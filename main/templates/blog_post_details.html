@@ -20,6 +20,18 @@
     </form>
 {% endif %}
 
+<form action="{% url 'like_post' blog_post.id %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">
+        {% if user in blog_post.likes.all %}
+            <span style="color: red;">❤️</span>
+        {% else %}
+            <span style="color: white;">🤍</span>
+        {% endif %}
+        {{ blog_post.total_likes }} Likes
+    </button>
+</form>
+
 <h2>Comments({% if blog_post.comments.all %} {{ blog_post.comments.all|length }} {% endif %})</h2>
 
 {% if not blog_post.comments.all %}
