@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from .models import BlogPost, Category, Comment
+from .models import BlogPost, Category, Comment, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
 # Create your views here.
 
@@ -162,3 +164,32 @@ def like_post(request, post_id):
         blog_post.likes.add(request.user)
 
     return redirect('blog_post_details', pk=blog_post.pk)
+
+@login_required
+def profile_detail(request, username):
+    owner = User.objects.filter(username=username).first() # returns None if User not found which you can debug later on with
+    if not owner:
+        raise Http404("User not found")
+
+    try:
+        profile = owner.profile
+    except Profile.DoesNotExist:
+        raise Http404("Profile not found")
+
+    is_following = profile.followers.filter(id=request.user.id).exists()
+
+    if request.method == "POST" and owner != request.user: # follow button if owner is NOT currently logged in user
+        if is_following:
+            profile.followers.remove(request.user)
+        else:
+            profile.followers.add(request.user)
+        return redirect(f"/user/{username}/")
+
+    posts = BlogPost.objects.filter(user=owner).order_by("-id")
+
+    return render(request, "user_profile.html", {
+        "owner": owner,
+        "profile": profile,
+        "posts": posts,
+        "is_following": is_following,
+    })

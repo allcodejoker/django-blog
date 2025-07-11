@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block body %}
+<div class="profile-card">
+  <img src="{{ profile.image.url }}" alt="{{ owner.username }} avatar"
+       class="avatar" style="max-width: 300px;margin: 10px;">
+  <h2>{{ owner.username }}</h2>
+  <p>{{ profile.bio }}</p>
+  <p><strong>{{ profile.total_followers }} follower{{ profile.total_followers|pluralize }}</strong></p>
+
+  {% if owner != user %}
+    <form method="post" style="display:inline">
+      {% csrf_token %}
+      {% if is_following %}
+        <button type="submit" class="btn btn-danger">Unfollow</button>
+      {% else %}
+        <button type="submit" class="btn btn-primary">Follow</button>
+      {% endif %}
+    </form>
+  {% endif %}
+</div>
+
+<hr>
+
+<h3>{{ owner.username }}'s posts</h3>
+<ul class="post-list">
+  {% for post in posts %}
+    <li>
+      <a href="{% url 'blog_post_details' post.pk %}">{{ post.title }}</a>
+      <small class="text-muted">{{ post.date|date:"M j, Y" }}</small>
+    </li>
+  {% empty %}
+    <li>No posts yet.</li>
+  {% endfor %}
+</ul>
+{% endblock %}
