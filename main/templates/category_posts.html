@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %} Category Posts {% endblock %}
+
+{% block body %}
+<ul class="post-list">
+    {% for post in posts %}
+    <li>
+        <a href="{% url 'blog_post_details' post.pk %}">{{ post.title }}</a>
+        <small class="text-muted">{{ post.date|date:"M j, Y" }}</small>
+    </li>
+    {% empty %}
+    <li>No posts yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
